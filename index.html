@@ -6,40 +6,42 @@
 <title>FY2026 Award Listing – American University</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; font-size: 14px; color: #222; background: #f5f5f5; padding: 20px 16px; }
-  .page-wrap { max-width: 900px; margin: 0 auto; }
+  body { font-family: Arial, sans-serif; font-size: 14px; color: #222; background: #f5f5f5; padding: 32px 24px; }
+  .page-wrap { max-width: 1100px; margin: 0 auto; background: #fff; border-radius: 8px; padding: 36px 40px; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
 
-  header { background: #fff; border-top: 5px solid #c8102e; border-radius: 8px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
-  header h1 { font-size: 20px; font-weight: 700; color: #c8102e; }
-  header p { color: #777; font-size: 13px; margin-top: 4px; }
+  header { border-bottom: 3px solid #c8102e; padding-bottom: 20px; margin-bottom: 28px; }
+  header h1 { font-size: 22px; font-weight: 700; color: #c8102e; }
+  header p { color: #666; font-size: 13px; margin-top: 4px; }
 
-  .controls { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-  .controls input { flex: 1; min-width: 180px; padding: 9px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
-  .controls select { padding: 9px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; }
+  .controls { margin-bottom: 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .controls input { flex: 1; min-width: 200px; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+  .controls select { padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; background: #fff; }
 
-  .dept-block { margin-bottom: 20px; }
-  .dept-header { background: #1a1a2e; color: #fff; padding: 10px 16px; border-radius: 6px 6px 0 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
-  .dept-name { font-weight: 700; font-size: 14px; }
-  .dept-meta { font-size: 12px; color: #aaa; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
-  .card { background: #fff; border-left: 3px solid #c8102e; padding: 12px 14px; border-bottom: 1px solid #eee; }
-  .card:last-child { border-radius: 0 0 6px 6px; }
-  .card:hover { background: #fffbf0; }
-  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 4px; }
-  .pi { font-weight: 700; color: #1a1a2e; font-size: 14px; white-space: nowrap; }
-  .amount { font-weight: 700; color: #c8102e; font-size: 14px; white-space: nowrap; }
-  .desc { font-size: 13px; color: #333; margin-bottom: 4px; line-height: 1.4; }
-  .sponsor { font-size: 12px; color: #888; }
+  table { width: 100%; border-collapse: collapse; min-width: 600px; }
+  thead th { background: #1a1a2e; color: #fff; padding: 10px 12px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; position: sticky; top: 0; }
+  thead th.amount { text-align: right; }
 
-  .hidden { display: none !important; }
+  tr.dept-header td { background: #f0f0f0; padding: 8px 12px; font-weight: 700; font-size: 13px; color: #333; border-top: 2px solid #c8102e; }
+  .dept-meta { font-weight: 400; color: #777; font-size: 12px; }
 
-  footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 24px; }
+  tbody tr { border-bottom: 1px solid #eee; }
+  tbody tr:hover { background: #fffbf0; }
+  tbody tr.hidden { display: none; }
+  td { padding: 9px 12px; vertical-align: top; font-size: 13px; }
+  td.pi { font-weight: 600; width: 100px; white-space: nowrap; color: #1a1a2e; }
+  td.desc { color: #333; }
+  td.sponsor { color: #555; width: 220px; font-size: 12px; }
+  td.amount { text-align: right; white-space: nowrap; font-weight: 600; width: 110px; color: #c8102e; }
 
-  @media (max-width: 500px) {
-    body { padding: 12px 10px; }
-    header { padding: 16px; }
-    .controls select { font-size: 13px; }
-    .pi, .amount { font-size: 13px; }
+  footer { margin-top: 24px; font-size: 12px; color: #aaa; text-align: center; }
+
+  @media (max-width: 600px) {
+    body { padding: 16px 12px; }
+    .page-wrap { padding: 20px 16px; }
+    header h1 { font-size: 18px; }
+    .controls select { width: 100%; }
   }
 </style>
 </head>
@@ -51,477 +53,585 @@
   </header>
 
   <div class="controls">
-    <input type="text" id="searchBox" placeholder="Search PI, project, or sponsor…" oninput="filterCards()">
-    <select id="deptFilter" onchange="filterCards()">
-      <option value="">All Schools & Units</option>
+    <input type="text" id="searchBox" placeholder="Search by PI, project title, or sponsor…" oninput="filterTable()">
+    <select id="deptFilter" onchange="filterTable()">
+      <option value="">All Schools / Units</option>
       <option value="CAS">College of Arts & Sciences (CAS)</option><option value="SPA">School of Public Affairs (SPA)</option><option value="SIS">School of International Service (SIS)</option><option value="WCL">Washington College of Law (WCL)</option><option value="SOE">School of Education (SOE)</option><option value="SOC">School of Communication (SOC)</option><option value="WAMU">WAMU 88.5</option><option value="OR">Office of Research (OR)</option>
     </select>
   </div>
 
-  <div id="awardsList">
-<div class="dept-block" data-dept="CAS">
-<div class="dept-header"><span class="dept-name">College of Arts & Sciences (CAS)</span><span class="dept-meta">31 awards · $4,625,316</span></div>
-<div class="card" data-text="airapetian observationally constrained modeling of the origin and impacts of exoplanetary space weather university of california los angeles (ucla)">
-  <div class="card-top"><span class="pi">Airapetian</span><span class="amount">$28,698</span></div>
-  <div class="desc">Observationally Constrained Modeling of the Origin and Impacts of Exoplanetary Space Weather</div>
-  <div class="sponsor">University of California Los Angeles (UCLA)</div>
-</div>
-<div class="card" data-text="angotti district of columbia center for aids research (dc cfar) - swg george washington university (gwashingtonu)">
-  <div class="card-top"><span class="pi">Angotti</span><span class="amount">$7,770</span></div>
-  <div class="desc">District of Columbia Center for AIDS Research (DC CFAR) - SWG</div>
-  <div class="sponsor">George Washington University (GWASHINGTONU)</div>
-</div>
-<div class="card" data-text="barnes enhancing consistency and discoverability across the sunpy ecosystem national aeronautics and space administration (nasa)">
-  <div class="card-top"><span class="pi">Barnes</span><span class="amount">$21,864</span></div>
-  <div class="desc">Enhancing Consistency And Discoverability Across The Sunpy Ecosystem</div>
-  <div class="sponsor">National Aeronautics and Space Administration (NASA)</div>
-</div>
-<div class="card" data-text="barnes modeling energy release and beam heating in nustar hard x-ray coronal transients national aeronautics and space administration (nasa)">
-  <div class="card-top"><span class="pi">Barnes</span><span class="amount">$14,576</span></div>
-  <div class="desc">Modeling Energy Release and Beam Heating in NuSTAR Hard X-Ray Coronal Transients</div>
-  <div class="sponsor">National Aeronautics and Space Administration (NASA)</div>
-</div>
-<div class="card" data-text="barnes modeling energy release and beam heating in nustar hard x-ray coronal transients national aeronautics and space administration (nasa)">
-  <div class="card-top"><span class="pi">Barnes</span><span class="amount">$14,576</span></div>
-  <div class="desc">Modeling Energy Release and Beam Heating in NuSTAR Hard X-Ray Coronal Transients</div>
-  <div class="sponsor">National Aeronautics and Space Administration (NASA)</div>
-</div>
-<div class="card" data-text="barnes jedi: joint euv coronal diagnostic investigation southwest research institute (swri)">
-  <div class="card-top"><span class="pi">Barnes</span><span class="amount">$7,408</span></div>
-  <div class="desc">JEDI: Joint EUV coronal Diagnostic Investigation</div>
-  <div class="sponsor">SOUTHWEST RESEARCH INSTITUTE (SWRI)</div>
-</div>
-<div class="card" data-text="blankenship dc center for aids research developmental core (core b) george washington university (gwashingtonu)">
-  <div class="card-top"><span class="pi">Blankenship</span><span class="amount">$12,111</span></div>
-  <div class="desc">DC CENTER FOR AIDS RESEARCH DEVELOPMENTAL CORE (CORE B)</div>
-  <div class="sponsor">George Washington University (GWASHINGTONU)</div>
-</div>
-<div class="card" data-text="bonev collaborative research: transformative studies of cometary volatiles in the era of modern near-infrared spectrographs national science foundation (nsf)">
-  <div class="card-top"><span class="pi">Bonev</span><span class="amount">$330,562</span></div>
-  <div class="desc">Collaborative Research: Transformative studies of Cometary Volatiles in the Era of Modern Near-Infrared Spectrographs</div>
-  <div class="sponsor">National Science Foundation (NSF)</div>
-</div>
-<div class="card" data-text="broder collaborative research: the causes and consequences of adaptive radiation in animal communication, from individuals to communities national science foundation (nsf)">
-  <div class="card-top"><span class="pi">Broder</span><span class="amount">$557,547</span></div>
-  <div class="desc">Collaborative research: The causes and consequences of adaptive radiation in animal communication, from individuals to communities</div>
-  <div class="sponsor">National Science Foundation (NSF)</div>
-</div>
-<div class="card" data-text="cardenas brc-bio:the symbionts' symbionts: dissecting the microbiome of the coral endosymbiont (symbiodiniaceae) national science foundation (nsf)">
-  <div class="card-top"><span class="pi">Cardenas</span><span class="amount">$495,000</span></div>
-  <div class="desc">BRC-BIO:The symbionts' symbionts: Dissecting the microbiome of the coral endosymbiont (Symbiodiniaceae)</div>
-  <div class="sponsor">National Science Foundation (NSF)</div>
-</div>
-<div class="card" data-text="ding collaborative research: advanced ai framework to improve understanding and prediction of wildland fire national science foundation (nsf)">
-  <div class="card-top"><span class="pi">Ding</span><span class="amount">$867,245</span></div>
-  <div class="desc">Collaborative Research: Advanced AI Framework to Improve Understanding and Prediction of Wildland Fire</div>
-  <div class="sponsor">National Science Foundation (NSF)</div>
-</div>
-<div class="card" data-text="ding pix4dcloud: a suite of physics-constrained transformer models to retrieve 4d clouds in real world and digital twins national aeronautics and space administration (nasa)">
-  <div class="card-top"><span class="pi">Ding</span><span class="amount">$100,602</span></div>
-  <div class="desc">Pix4DCloud: A Suite of Physics-Constrained Transformer Models to Retrieve 4D Clouds in Real World and Digital Twins</div>
-  <div class="sponsor">National Aeronautics and Space Administration (NASA)</div>
-</div>
-<div class="card" data-text="dondero reproductive and child health trajectories in successive novel infectious disease crises university of pennsylvania (uopenn)">
-  <div class="card-top"><span class="pi">Dondero</span><span class="amount">$60,651</span></div>
-  <div class="desc">Reproductive and Child Health Trajectories in Successive Novel Infectious Disease Crises</div>
-  <div class="sponsor">University of Pennsylvania (UOPENN)</div>
-</div>
-<div class="card" data-text="fauchez constraining the habitability of m-dwarf planets using computationally efficient climate models blue marble space institute of science (bmsis)">
-  <div class="card-top"><span class="pi">Fauchez</span><span class="amount">$29,252</span></div>
-  <div class="desc">Constraining the Habitability of M-dwarf Planets Using Computationally Efficient Climate Models</div>
-  <div class="sponsor">Blue Marble Space Institute of Science (BMSIS)</div>
-</div>
-<div class="card" data-text="godwin collaborative research: hnds-i: a global seafood trade network database for sustainable food systems, human health, and nutrition security university of washington (washuni)">
-  <div class="card-top"><span class="pi">Godwin</span><span class="amount">$37,340</span></div>
-  <div class="desc">Collaborative Research: HNDS-I: A global seafood trade network database for sustainable food systems, human health, and nutrition security</div>
-  <div class="sponsor">University of Washington (WASHUNI)</div>
-</div>
-<div class="card" data-text="harry mirror coatings for next-generation gravitational-wave detectors: a path to discovery stanford university (stanford)">
-  <div class="card-top"><span class="pi">Harry</span><span class="amount">$20,839</span></div>
-  <div class="desc">Mirror Coatings for Next-Generation Gravitational-Wave Detectors: A Path to Discovery</div>
-  <div class="sponsor">Stanford University (STANFORD)</div>
-</div>
-<div class="card" data-text="johnson improving photochemical models for cold and hot planetary atmospheres using new ab initio reaction rate coefficients national aeronautics and space administration (nasa)">
-  <div class="card-top"><span class="pi">Johnson</span><span class="amount">$33,816</span></div>
-  <div class="desc">Improving Photochemical Models for Cold and Hot Planetary Atmospheres using New Ab Initio Reaction Rate Coefficients</div>
-  <div class="sponsor">National Aeronautics and Space Administration (NASA)</div>
-</div>
-<div class="card" data-text="johnson remote sensing of planetary atmospheres in the solar system and beyond national aeronautics and space administration (nasa)">
-  <div class="card-top"><span class="pi">Johnson</span><span class="amount">$538,923</span></div>
-  <div class="desc">Remote Sensing of Planetary Atmospheres in the Solar System and Beyond</div>
-  <div class="sponsor">National Aeronautics and Space Administration (NASA)</div>
-</div>
-<div class="card" data-text="jones the potential health and economic impacts of the dobbs decision georgia institute of technology (gatech)">
-  <div class="card-top"><span class="pi">Jones</span><span class="amount">$34,138</span></div>
-  <div class="desc">The Potential Health and Economic Impacts of the Dobbs Decision</div>
-  <div class="sponsor">Georgia Institute of Technology (GATECH)</div>
-</div>
-<div class="card" data-text="koch mechanistic insights into the impact of sea ice loss on snow crab trophic dynamics and  productivity north pacific research board (nprb)">
-  <div class="card-top"><span class="pi">Koch</span><span class="amount">$68,870</span></div>
-  <div class="desc">Mechanistic insights into the impact of sea ice loss on snow crab trophic dynamics and  productivity</div>
-  <div class="sponsor">North Pacific Research Board (NPRB)</div>
-</div>
-<div class="card" data-text="kuo sarmc yr3 testing the efficacy of safe south africa: an intervention to prevent hiv risk and interpersonal violence among adolescent boys national institutes of health (nih)">
-  <div class="card-top"><span class="pi">Kuo</span><span class="amount">$294,614</span></div>
-  <div class="desc">SARMC YR3 Testing the Efficacy of Safe South Africa: An Intervention to Prevent HIV Risk and Interpersonal Violence Among Adolescent Boys</div>
-  <div class="sponsor">National Institutes of Health (NIH)</div>
-</div>
-<div class="card" data-text="laubach cortical actions of opioids on reward-guided decision making national institutes of health (nih)">
-  <div class="card-top"><span class="pi">Laubach</span><span class="amount">$476,496</span></div>
-  <div class="desc">Cortical actions of opioids on reward-guided decision making</div>
-  <div class="sponsor">National Institutes of Health (NIH)</div>
-</div>
-<div class="card" data-text="park exploring huayan buddhism avatamsaka buddhist lotus society (avbudlotsoc)">
-  <div class="card-top"><span class="pi">Park</span><span class="amount">$54,072</span></div>
-  <div class="desc">Exploring Huayan Buddhism</div>
-  <div class="sponsor">Avatamsaka Buddhist Lotus Society (AVBUDLOTSOC)</div>
-</div>
-<div class="card" data-text="rasmussen korean art spotlight project korea arts management services (koreaams)">
-  <div class="card-top"><span class="pi">Rasmussen</span><span class="amount">$197,726</span></div>
-  <div class="desc">Korean Art Spotlight Project</div>
-  <div class="sponsor">Korea Arts Management Services (KOREAAMS)</div>
-</div>
-<div class="card" data-text="robinson local acoustic topological estimators for statistical signal tools (latesst) office of naval research (onr)">
-  <div class="card-top"><span class="pi">Robinson</span><span class="amount">$133,572</span></div>
-  <div class="desc">Local Acoustic Topological Estimators for Statistical Signal Tools (LATESST)</div>
-  <div class="sponsor">Office of Naval Research (ONR)</div>
-</div>
-<div class="card" data-text="roth collaborative research: elucidating the composition of our solar system's most primitive materials - comprehensive chemical analysis of a halley-type comet national science foundation (nsf)">
-  <div class="card-top"><span class="pi">Roth</span><span class="amount">$75,645</span></div>
-  <div class="desc">Collaborative Research: Elucidating the Composition of our Solar System's Most Primitive Materials - Comprehensive Chemical Analysis of a Halley-Type Comet</div>
-  <div class="sponsor">National Science Foundation (NSF)</div>
-</div>
-<div class="card" data-text="roth composition of an interstellar object - unique insights into protoplanetary disk midplane chemistry space telescope science institute (stsi)">
-  <div class="card-top"><span class="pi">Roth</span><span class="amount">$21,325</span></div>
-  <div class="desc">Composition of an Interstellar Object - Unique Insights into Protoplanetary Disk Midplane Chemistry</div>
-  <div class="sponsor">Space Telescope Science Institute (STSI)</div>
-</div>
-<div class="card" data-text="roth testing the refractory sulfur reservoir hypothesis with the next interstellar object space telescope science institute (stsi)">
-  <div class="card-top"><span class="pi">Roth</span><span class="amount">$9,220</span></div>
-  <div class="desc">Testing The Refractory Sulfur Reservoir Hypothesis with the Next Interstellar Object</div>
-  <div class="sponsor">Space Telescope Science Institute (STSI)</div>
-</div>
-<div class="card" data-text="sangaramoorthy reroute: research employing environmental systems and occupational health policy analyses to interrupt the impact of structural racism on agricultural workers and their respiratory health (respirar) university of michigan (uomichigan)">
-  <div class="card-top"><span class="pi">Sangaramoorthy</span><span class="amount">$18,858</span></div>
-  <div class="desc">REROUTE: Research Employing Environmental Systems and Occupational Health Policy Analyses to Interrupt the Impact of Structural Racism on Agricultural Workers and Their Respiratory Health (RESPIRAR)</div>
-  <div class="sponsor">University of Michigan (UOMICHIGAN)</div>
-</div>
-<div class="card" data-text="snelling healthy corners program evaluation fy26 dc central kitchen (dccentralk)">
-  <div class="card-top"><span class="pi">Snelling</span><span class="amount">$52,000</span></div>
-  <div class="desc">Healthy Corners Program Evaluation FY26</div>
-  <div class="sponsor">DC Central Kitchen (DCCENTRALK)</div>
-</div>
-<div class="card" data-text="snider koster foundation summer study grants for music majors marinus and minna b koster foundation inc (kosterfninc)">
-  <div class="card-top"><span class="pi">Snider</span><span class="amount">$10,000</span></div>
-  <div class="desc">Koster Foundation Summer Study Grants for Music Majors</div>
-  <div class="sponsor">Marinus And Minna B Koster Foundation Inc (KOSTERFNINC)</div>
-</div>
-</div>
-<div class="dept-block" data-dept="SPA">
-<div class="dept-header"><span class="dept-name">School of Public Affairs (SPA)</span><span class="dept-meta">21 awards · $5,189,113</span></div>
-<div class="card" data-text="baldwin fy25 cops hiring program city of olean (cityolean)">
-  <div class="card-top"><span class="pi">Baldwin</span><span class="amount">$40,308</span></div>
-  <div class="desc">FY25 COPS Hiring Program</div>
-  <div class="sponsor">City of Olean (CITYOLEAN)</div>
-</div>
-<div class="card" data-text="barker the correspondence of zachary taylor and millard fillmore national endowment for the humanities (neh)">
-  <div class="card-top"><span class="pi">Barker</span><span class="amount">$197,322</span></div>
-  <div class="desc">The Correspondence of Zachary Taylor and Millard Fillmore</div>
-  <div class="sponsor">National Endowment for the Humanities (NEH)</div>
-</div>
-<div class="card" data-text="duque child development, parenting, and long-run educational opportunities: evidence from  colombian linked-administrative data jacobs foundation (jacobsfn)">
-  <div class="card-top"><span class="pi">Duque</span><span class="amount">$7,535</span></div>
-  <div class="desc">Child Development, Parenting, and Long-run Educational Opportunities: Evidence from  Colombian Linked-Administrative Data</div>
-  <div class="sponsor">Jacobs Foundation (JACOBSFN)</div>
-</div>
-<div class="card" data-text="duque public housing and crime massachusetts institute of technology (mit)">
-  <div class="card-top"><span class="pi">Duque</span><span class="amount">$20,000</span></div>
-  <div class="desc">Public Housing and Crime</div>
-  <div class="sponsor">Massachusetts Institute of Technology (MIT)</div>
-</div>
-<div class="card" data-text="faulk 2025 independent sector workforce study urban institute (urbaninst)">
-  <div class="card-top"><span class="pi">Faulk</span><span class="amount">$42,000</span></div>
-  <div class="desc">2025 Independent Sector Workforce Study</div>
-  <div class="sponsor">Urban Institute (URBANINST)</div>
-</div>
-<div class="card" data-text="grewal evaluating us security cooperation in turkey and tunisia us department of defense (dod)">
-  <div class="card-top"><span class="pi">Grewal</span><span class="amount">$465,089</span></div>
-  <div class="desc">Evaluating US Security Cooperation in Turkey and Tunisia</div>
-  <div class="sponsor">US Department of Defense (DOD)</div>
-</div>
-<div class="card" data-text="jensen nij fy24 domestic radicalization and violent extremism research center of excellence the center for naval analyses foundation (cnafn)">
-  <div class="card-top"><span class="pi">Jensen</span><span class="amount">$143,543</span></div>
-  <div class="desc">NIJ FY24 Domestic Radicalization and Violent Extremism Research Center of Excellence</div>
-  <div class="sponsor">The Center for Naval Analyses Foundation (CNAFN)</div>
-</div>
-<div class="card" data-text="leighley jan leighley - ipa national science foundation (nsf)">
-  <div class="card-top"><span class="pi">Leighley</span><span class="amount">$349,066</span></div>
-  <div class="desc">Jan Leighley - IPA</div>
-  <div class="sponsor">National Science Foundation (NSF)</div>
-</div>
-<div class="card" data-text="levine pti lecture series institute for humane studies (insths)">
-  <div class="card-top"><span class="pi">Levine</span><span class="amount">$35,739</span></div>
-  <div class="desc">PTI Lecture Series</div>
-  <div class="sponsor">Institute for Humane Studies (INSTHS)</div>
-</div>
-<div class="card" data-text="levine supplemental support request to the ihs to celebrate america's 250th & teach civics institute for humane studies (insths)">
-  <div class="card-top"><span class="pi">Levine</span><span class="amount">$25,000</span></div>
-  <div class="desc">Supplemental Support Request to the IHS to Celebrate America's 250th & Teach Civics</div>
-  <div class="sponsor">Institute for Humane Studies (INSTHS)</div>
-</div>
-<div class="card" data-text="matsudaira peer center partnership with washington student achievement council (wsac) strada education foundation (strada)">
-  <div class="card-top"><span class="pi">Matsudaira</span><span class="amount">$180,000</span></div>
-  <div class="desc">PEER Center Partnership with Washington Student Achievement Council (WSAC)</div>
-  <div class="sponsor">Strada Education Foundation (STRADA)</div>
-</div>
-<div class="card" data-text="merrill cultivating inquiry through vital historical documents in the classroom (civic) seminars us department of education (doe)">
-  <div class="card-top"><span class="pi">Merrill</span><span class="amount">$1,748,805</span></div>
-  <div class="desc">Cultivating Inquiry Through Vital Historical Documents in the Classroom (CIVIC) Seminars</div>
-  <div class="sponsor">US Department of Education (DOE)</div>
-</div>
-<div class="card" data-text="morrissey childhood safety net investments and health disparities from birth through young adulthood brown university (brownu)">
-  <div class="card-top"><span class="pi">Morrissey</span><span class="amount">$63,900</span></div>
-  <div class="desc">Childhood Safety Net Investments and Health Disparities From Birth Through Young Adulthood</div>
-  <div class="sponsor">Brown University (BROWNU)</div>
-</div>
-<div class="card" data-text="peril idhr statewide illinois hate and extremism statewide landscape study university of illinois at chicago (uic)">
-  <div class="card-top"><span class="pi">PERIL</span><span class="amount">$218,968</span></div>
-  <div class="desc">IDHR Statewide Illinois Hate and Extremism Statewide Landscape Study</div>
-  <div class="sponsor">University of Illinois at Chicago (UIC)</div>
-</div>
-<div class="card" data-text="peril cultivating resilient democracies: gendered divides, polarization and social cohesion carnegie corporation of new york (carnegie)">
-  <div class="card-top"><span class="pi">PERIL</span><span class="amount">$200,000</span></div>
-  <div class="desc">Cultivating Resilient Democracies: Gendered Divides, Polarization and Social Cohesion</div>
-  <div class="sponsor">Carnegie Corporation of New York (CARNEGIE)</div>
-</div>
-<div class="card" data-text="peril care centers, summer institute, intervention guide & longitudinal study southern poverty law center (southernpl)">
-  <div class="card-top"><span class="pi">PERIL</span><span class="amount">$350,000</span></div>
-  <div class="desc">CARE Centers, Summer Institute, Intervention Guide & Longitudinal Study</div>
-  <div class="sponsor">Southern Poverty Law Center (SOUTHERNPL)</div>
-</div>
-<div class="card" data-text="peril peril core funding w.k. kellogg foundation (kellogg)">
-  <div class="card-top"><span class="pi">PERIL</span><span class="amount">$500,000</span></div>
-  <div class="desc">PERIL Core Funding</div>
-  <div class="sponsor">W.K. Kellogg Foundation (KELLOGG)</div>
-</div>
-<div class="card" data-text="peril u.s. democracy program hewlett foundation (hewlettfn)">
-  <div class="card-top"><span class="pi">PERIL</span><span class="amount">$250,000</span></div>
-  <div class="desc">U.S. Democracy Program</div>
-  <div class="sponsor">Hewlett Foundation (HEWLETTFN)</div>
-</div>
-<div class="card" data-text="peril scaling psychological resilience to antisemitism: accelerated inoculation through influencer distribution boundless israel inc (biinc)">
-  <div class="card-top"><span class="pi">PERIL</span><span class="amount">$92,474</span></div>
-  <div class="desc">Scaling Psychological Resilience to Antisemitism: Accelerated Inoculation Through Influencer Distribution</div>
-  <div class="sponsor">Boundless Israel Inc (BIINC)</div>
-</div>
-<div class="card" data-text="persico real pay for real jobs: virginia dif northwestern university (northwestern)">
-  <div class="card-top"><span class="pi">Persico</span><span class="amount">$33,266</span></div>
-  <div class="desc">Real Pay for Real Jobs: Virginia DIF</div>
-  <div class="sponsor">Northwestern University (NORTHWESTERN)</div>
-</div>
-<div class="card" data-text="— understanding victim experiences with alternative reporting options after sexual assault and evaluating the impact of anonymous consultation calls with police wichita state university (wichstu)">
-  <div class="card-top"><span class="pi">—</span><span class="amount">$226,097</span></div>
-  <div class="desc">Understanding victim experiences with alternative reporting options after sexual assault and evaluating the impact of anonymous consultation calls with police</div>
-  <div class="sponsor">Wichita State University (WICHSTU)</div>
-</div>
-</div>
-<div class="dept-block" data-dept="SIS">
-<div class="dept-header"><span class="dept-name">School of International Service (SIS)</span><span class="dept-meta">14 awards · $4,801,800</span></div>
-<div class="card" data-text="bradshaw workshop on trust and safety in online games center for democracy & technology (ctrdemtech)">
-  <div class="card-top"><span class="pi">Bradshaw</span><span class="amount">$10,000</span></div>
-  <div class="desc">Workshop on Trust and Safety in Online Games</div>
-  <div class="sponsor">Center for Democracy & Technology (CTRDEMTECH)</div>
-</div>
-<div class="card" data-text="bradshaw workshop on trust and safety in online games new york university (nyu)">
-  <div class="card-top"><span class="pi">Bradshaw</span><span class="amount">$10,605</span></div>
-  <div class="desc">Workshop on Trust and Safety in Online Games</div>
-  <div class="sponsor">New York University (NYU)</div>
-</div>
-<div class="card" data-text="bradshaw are llms transforming cyber-criminal operations? a study of llms on dark web marketplaces. ai security institute (aisi)">
-  <div class="card-top"><span class="pi">Bradshaw</span><span class="amount">$142,802</span></div>
-  <div class="desc">Are LLMs Transforming Cyber-Criminal Operations? A Study of LLMs on Dark Web Marketplaces.</div>
-  <div class="sponsor">AI Security Institute (AISI)</div>
-</div>
-<div class="card" data-text="fox indigenous community health rights defenders and respectful care in mesoamerica margaret a cargill philanthropies (macargillp)">
-  <div class="card-top"><span class="pi">Fox</span><span class="amount">$2,300,000</span></div>
-  <div class="desc">Indigenous community health rights defenders and respectful care in Mesoamerica</div>
-  <div class="sponsor">Margaret A Cargill Philanthropies (MACARGILLP)</div>
-</div>
-<div class="card" data-text="gearhart follow-on to fisher learning exchanges in mexico and ghana multiplier (multiplier)">
-  <div class="card-top"><span class="pi">Gearhart</span><span class="amount">$45,000</span></div>
-  <div class="desc">Follow-on to Fisher Learning Exchanges in Mexico and Ghana</div>
-  <div class="sponsor">Multiplier (MULTIPLIER)</div>
-</div>
-<div class="card" data-text="goldgeier stanford center for international security and cooperation visiting fellowship stanford university (stanford)">
-  <div class="card-top"><span class="pi">Goldgeier</span><span class="amount">$54,916</span></div>
-  <div class="desc">Stanford Center for International Security and Cooperation Visiting Fellowship</div>
-  <div class="sponsor">Stanford University (STANFORD)</div>
-</div>
-<div class="card" data-text="herr costs of espionage and policy principles microsoft operations (microsoftops)">
-  <div class="card-top"><span class="pi">Herr</span><span class="amount">$50,000</span></div>
-  <div class="desc">Costs of Espionage and Policy Principles</div>
-  <div class="sponsor">Microsoft Operations (MICROSOFTOPS)</div>
-</div>
-<div class="card" data-text="herr tracking spyware in an evolving global market atlantic council (atlanticcncl)">
-  <div class="card-top"><span class="pi">Herr</span><span class="amount">$53,427</span></div>
-  <div class="desc">Tracking Spyware in an Evolving Global Market</div>
-  <div class="sponsor">Atlantic Council (ATLANTICCNCL)</div>
-</div>
-<div class="card" data-text="martin promoting a new liberal international order in a turbulent age european union (europeanu)">
-  <div class="card-top"><span class="pi">Martin</span><span class="amount">$98,194</span></div>
-  <div class="desc">Promoting a New Liberal International Order in a Turbulent Age</div>
-  <div class="sponsor">European Union (EUROPEANU)</div>
-</div>
-<div class="card" data-text="nadelman toward a renewed idb civil society engagement strategy inter-american development bank (iadb)">
-  <div class="card-top"><span class="pi">Nadelman</span><span class="amount">$300,000</span></div>
-  <div class="desc">Toward a Renewed IDB Civil Society Engagement Strategy</div>
-  <div class="sponsor">Inter-American Development Bank (IADB)</div>
-</div>
-<div class="card" data-text="tama bridging the gap: new voices in national security frankel family foundation (frankelfn)">
-  <div class="card-top"><span class="pi">Tama</span><span class="amount">$1,062,000</span></div>
-  <div class="desc">Bridging the Gap: New Voices in National Security</div>
-  <div class="sponsor">Frankel Family Foundation (FRANKELFN)</div>
-</div>
-<div class="card" data-text="yamanis evaluating a pilot legal intervention to reduce hiv risk among high risk latina/o/x sexual/gender minorities national institutes of health (nih)">
-  <div class="card-top"><span class="pi">Yamanis</span><span class="amount">$608,698</span></div>
-  <div class="desc">Evaluating a pilot legal intervention to reduce HIV risk among high risk Latina/o/x sexual/gender minorities</div>
-  <div class="sponsor">National Institutes of Health (NIH)</div>
-</div>
-<div class="card" data-text="yamanis formative research to enhance digital literacy for long-acting prep among latin americans fordham university (fufordham)">
-  <div class="card-top"><span class="pi">Yamanis</span><span class="amount">$56,576</span></div>
-  <div class="desc">Formative research to enhance digital literacy for long-acting PrEP among Latin Americans</div>
-  <div class="sponsor">Fordham University (FUFORDHAM)</div>
-</div>
-<div class="card" data-text="yamanis dc center for aids research social and behavioral sciences (core e) george washington university (gwashingtonu)">
-  <div class="card-top"><span class="pi">Yamanis</span><span class="amount">$9,582</span></div>
-  <div class="desc">DC CENTER FOR AIDS RESEARCH SOCIAL AND BEHAVIORAL SCIENCES (CORE E)</div>
-  <div class="sponsor">George Washington University (GWASHINGTONU)</div>
-</div>
-</div>
-<div class="dept-block" data-dept="WCL">
-<div class="dept-header"><span class="dept-name">Washington College of Law (WCL)</span><span class="dept-meta">5 awards · $1,143,300</span></div>
-<div class="card" data-text="erie the future of international development ford foundation (fordfn)">
-  <div class="card-top"><span class="pi">Erie</span><span class="amount">$300,000</span></div>
-  <div class="desc">The Future of International Development</div>
-  <div class="sponsor">Ford Foundation (FORDFN)</div>
-</div>
-<div class="card" data-text="orloff national judicial network: forum on human trafficking and immigration in state courts 2026 state justice institute (sji)">
-  <div class="card-top"><span class="pi">Orloff</span><span class="amount">$75,000</span></div>
-  <div class="desc">National Judicial Network: Forum on Human Trafficking and Immigration in State Courts 2026</div>
-  <div class="sponsor">State Justice Institute (SJI)</div>
-</div>
-<div class="card" data-text="poirier program on legislative negotiation hewlett foundation (hewlettfn)">
-  <div class="card-top"><span class="pi">Poirier</span><span class="amount">$500,000</span></div>
-  <div class="desc">Program on Legislative Negotiation</div>
-  <div class="sponsor">Hewlett Foundation (HEWLETTFN)</div>
-</div>
-<div class="card" data-text="sacouto jurisprudence database - sexual and gender-based crimes, including conflict-related sexual violence united nations office on drugs and crime (undrugscr)">
-  <div class="card-top"><span class="pi">SaCouto</span><span class="amount">$30,000</span></div>
-  <div class="desc">Jurisprudence Database - Sexual and Gender-Based Crimes, including Conflict-Related Sexual Violence</div>
-  <div class="sponsor">United Nations Office on Drugs and Crime (UNDRUGSCR)</div>
-</div>
-<div class="card" data-text="— humphrey fellowship program 2025/26 institute of international education (insintled)">
-  <div class="card-top"><span class="pi">—</span><span class="amount">$238,300</span></div>
-  <div class="desc">Humphrey Fellowship Program 2025/26</div>
-  <div class="sponsor">Institute of International Education (INSINTLED)</div>
-</div>
-</div>
-<div class="dept-block" data-dept="SOE">
-<div class="dept-header"><span class="dept-name">School of Education (SOE)</span><span class="dept-meta">7 awards · $278,696</span></div>
-<div class="card" data-text="campbell teaching excellence colleges & universities pilot evaluation at transylvania university the bingham center for teaching excellence (binghamctr)">
-  <div class="card-top"><span class="pi">Campbell</span><span class="amount">$61,181</span></div>
-  <div class="desc">Teaching Excellence Colleges & Universities Pilot Evaluation at Transylvania University</div>
-  <div class="sponsor">The Bingham Center for Teaching Excellence (BINGHAMCTR)</div>
-</div>
-<div class="card" data-text="hopson co editor of american journal of evaluation american evaluation association (aea)">
-  <div class="card-top"><span class="pi">Hopson</span><span class="amount">$17,000</span></div>
-  <div class="desc">Co Editor of American Journal of Evaluation</div>
-  <div class="sponsor">American Evaluation Association (AEA)</div>
-</div>
-<div class="card" data-text="hopson cultivating evaluation leadership & building capacity through times of urgency university of illinois urbana-champaign (uoillinois)">
-  <div class="card-top"><span class="pi">Hopson</span><span class="amount">$40,000</span></div>
-  <div class="desc">Cultivating Evaluation Leadership & Building Capacity Through Times of Urgency</div>
-  <div class="sponsor">University of Illinois Urbana-Champaign (UOILLINOIS)</div>
-</div>
-<div class="card" data-text="jacobson pgcps-uwnca-au research partnership - year 3 united way of the national capital area (utdwayntlca)">
-  <div class="card-top"><span class="pi">Jacobson</span><span class="amount">$113,020</span></div>
-  <div class="desc">PGCPS-UWNCA-AU Research Partnership - Year 3</div>
-  <div class="sponsor">United Way of the National Capital Area (UTDWAYNTLCA)</div>
-</div>
-<div class="card" data-text="joseph american university future teachers citytutor dc (citytutordc)">
-  <div class="card-top"><span class="pi">Joseph</span><span class="amount">$25,000</span></div>
-  <div class="desc">American University Future Teachers</div>
-  <div class="sponsor">CityTutor DC (CITYTUTORDC)</div>
-</div>
-<div class="card" data-text="shand costs of conflict university of california los angeles (ucla)">
-  <div class="card-top"><span class="pi">Shand</span><span class="amount">$9,995</span></div>
-  <div class="desc">Costs of Conflict</div>
-  <div class="sponsor">University of California Los Angeles (UCLA)</div>
-</div>
-<div class="card" data-text="watkins establishing a national data repository on blackness and stem university of illinois at chicago (uic)">
-  <div class="card-top"><span class="pi">Watkins</span><span class="amount">$12,500</span></div>
-  <div class="desc">Establishing a National Data Repository on Blackness and STEM</div>
-  <div class="sponsor">University of Illinois at Chicago (UIC)</div>
-</div>
-</div>
-<div class="dept-block" data-dept="SOC">
-<div class="dept-header"><span class="dept-name">School of Communication (SOC)</span><span class="dept-meta">2 awards · $350,000</span></div>
-<div class="card" data-text="borum great american punchline documentary rockefeller philanthropy advisors (rockerfelpa)">
-  <div class="card-top"><span class="pi">Borum</span><span class="amount">$50,000</span></div>
-  <div class="desc">Great American Punchline Documentary</div>
-  <div class="sponsor">Rockefeller Philanthropy Advisors (ROCKERFELPA)</div>
-</div>
-<div class="card" data-text="borum new documentary platform perspective fund (perspectfd)">
-  <div class="card-top"><span class="pi">Borum</span><span class="amount">$300,000</span></div>
-  <div class="desc">New Documentary Platform</div>
-  <div class="sponsor">Perspective Fund (PERSPECTFD)</div>
-</div>
-</div>
-<div class="dept-block" data-dept="WAMU">
-<div class="dept-header"><span class="dept-name">WAMU 88.5</span><span class="dept-meta">1 awards · $1,000,000</span></div>
-<div class="card" data-text="tribble 1a: america in conversation corporation for public broadcasting (cpb)">
-  <div class="card-top"><span class="pi">Tribble</span><span class="amount">$1,000,000</span></div>
-  <div class="desc">1A: America In Conversation</div>
-  <div class="sponsor">Corporation for Public Broadcasting (CPB)</div>
-</div>
-</div>
-<div class="dept-block" data-dept="OR">
-<div class="dept-header"><span class="dept-name">Office of Research (OR)</span><span class="dept-meta">2 awards · $250,755</span></div>
-<div class="card" data-text="cece monitoring changes to land use and value in northern haiti through collaborative ethnographic and remote sensing approaches national science foundation (nsf)">
-  <div class="card-top"><span class="pi">CECE</span><span class="amount">$246,755</span></div>
-  <div class="desc">Monitoring changes to land use and value in Northern Haiti through collaborative ethnographic and remote sensing approaches</div>
-  <div class="sponsor">National Science Foundation (NSF)</div>
-</div>
-<div class="card" data-text="provost 2026 american university's mlk day of service transform mid-atlantic, inc. (transformmainc)">
-  <div class="card-top"><span class="pi">PROVOST</span><span class="amount">$4,000</span></div>
-  <div class="desc">2026 American University's MLK Day of Service</div>
-  <div class="sponsor">Transform Mid-Atlantic, Inc. (TRANSFORMMAINC)</div>
-</div>
-</div>
-
+  <div class="table-wrap">
+  <table id="awardsTable">
+    <thead>
+      <tr>
+        <th style="width:100px">PI</th>
+        <th>Project Title</th>
+        <th style="width:220px">Sponsor</th>
+        <th class="amount" style="width:110px">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    <tr class="dept-header">
+        <td colspan="4">College of Arts & Sciences (CAS) &nbsp;<span class="dept-meta">31 awards &nbsp;·&nbsp; $4,625,316</span></td>
+    </tr>
+    <tr>
+        <td class="pi">Airapetian</td>
+        <td class="desc">Observationally Constrained Modeling of the Origin and Impacts of Exoplanetary Space Weather</td>
+        <td class="sponsor">University of California Los Angeles (UCLA)</td>
+        <td class="amount">$28,698</td>
+    </tr>
+    <tr>
+        <td class="pi">Angotti</td>
+        <td class="desc">District of Columbia Center for AIDS Research (DC CFAR) - SWG</td>
+        <td class="sponsor">George Washington University (GWASHINGTONU)</td>
+        <td class="amount">$7,770</td>
+    </tr>
+    <tr>
+        <td class="pi">Barnes</td>
+        <td class="desc">Enhancing Consistency And Discoverability Across The Sunpy Ecosystem</td>
+        <td class="sponsor">National Aeronautics and Space Administration (NASA)</td>
+        <td class="amount">$21,864</td>
+    </tr>
+    <tr>
+        <td class="pi">Barnes</td>
+        <td class="desc">Modeling Energy Release and Beam Heating in NuSTAR Hard X-Ray Coronal Transients</td>
+        <td class="sponsor">National Aeronautics and Space Administration (NASA)</td>
+        <td class="amount">$14,576</td>
+    </tr>
+    <tr>
+        <td class="pi">Barnes</td>
+        <td class="desc">Modeling Energy Release and Beam Heating in NuSTAR Hard X-Ray Coronal Transients</td>
+        <td class="sponsor">National Aeronautics and Space Administration (NASA)</td>
+        <td class="amount">$14,576</td>
+    </tr>
+    <tr>
+        <td class="pi">Barnes</td>
+        <td class="desc">JEDI: Joint EUV coronal Diagnostic Investigation</td>
+        <td class="sponsor">SOUTHWEST RESEARCH INSTITUTE (SWRI)</td>
+        <td class="amount">$7,408</td>
+    </tr>
+    <tr>
+        <td class="pi">Blankenship</td>
+        <td class="desc">DC CENTER FOR AIDS RESEARCH DEVELOPMENTAL CORE (CORE B)</td>
+        <td class="sponsor">George Washington University (GWASHINGTONU)</td>
+        <td class="amount">$12,111</td>
+    </tr>
+    <tr>
+        <td class="pi">Bonev</td>
+        <td class="desc">Collaborative Research: Transformative studies of Cometary Volatiles in the Era of Modern Near-Infrared Spectrographs</td>
+        <td class="sponsor">National Science Foundation (NSF)</td>
+        <td class="amount">$330,562</td>
+    </tr>
+    <tr>
+        <td class="pi">Broder</td>
+        <td class="desc">Collaborative research: The causes and consequences of adaptive radiation in animal communication, from individuals to communities</td>
+        <td class="sponsor">National Science Foundation (NSF)</td>
+        <td class="amount">$557,547</td>
+    </tr>
+    <tr>
+        <td class="pi">Cardenas</td>
+        <td class="desc">BRC-BIO:The symbionts' symbionts: Dissecting the microbiome of the coral endosymbiont (Symbiodiniaceae)</td>
+        <td class="sponsor">National Science Foundation (NSF)</td>
+        <td class="amount">$495,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Ding</td>
+        <td class="desc">Collaborative Research: Advanced AI Framework to Improve Understanding and Prediction of Wildland Fire</td>
+        <td class="sponsor">National Science Foundation (NSF)</td>
+        <td class="amount">$867,245</td>
+    </tr>
+    <tr>
+        <td class="pi">Ding</td>
+        <td class="desc">Pix4DCloud: A Suite of Physics-Constrained Transformer Models to Retrieve 4D Clouds in Real World and Digital Twins</td>
+        <td class="sponsor">National Aeronautics and Space Administration (NASA)</td>
+        <td class="amount">$100,602</td>
+    </tr>
+    <tr>
+        <td class="pi">Dondero</td>
+        <td class="desc">Reproductive and Child Health Trajectories in Successive Novel Infectious Disease Crises</td>
+        <td class="sponsor">University of Pennsylvania (UOPENN)</td>
+        <td class="amount">$60,651</td>
+    </tr>
+    <tr>
+        <td class="pi">Fauchez</td>
+        <td class="desc">Constraining the Habitability of M-dwarf Planets Using Computationally Efficient Climate Models</td>
+        <td class="sponsor">Blue Marble Space Institute of Science (BMSIS)</td>
+        <td class="amount">$29,252</td>
+    </tr>
+    <tr>
+        <td class="pi">Godwin</td>
+        <td class="desc">Collaborative Research: HNDS-I: A global seafood trade network database for sustainable food systems, human health, and nutrition security</td>
+        <td class="sponsor">University of Washington (WASHUNI)</td>
+        <td class="amount">$37,340</td>
+    </tr>
+    <tr>
+        <td class="pi">Harry</td>
+        <td class="desc">Mirror Coatings for Next-Generation Gravitational-Wave Detectors: A Path to Discovery</td>
+        <td class="sponsor">Stanford University (STANFORD)</td>
+        <td class="amount">$20,839</td>
+    </tr>
+    <tr>
+        <td class="pi">Johnson</td>
+        <td class="desc">Improving Photochemical Models for Cold and Hot Planetary Atmospheres using New Ab Initio Reaction Rate Coefficients</td>
+        <td class="sponsor">National Aeronautics and Space Administration (NASA)</td>
+        <td class="amount">$33,816</td>
+    </tr>
+    <tr>
+        <td class="pi">Johnson</td>
+        <td class="desc">Remote Sensing of Planetary Atmospheres in the Solar System and Beyond</td>
+        <td class="sponsor">National Aeronautics and Space Administration (NASA)</td>
+        <td class="amount">$538,923</td>
+    </tr>
+    <tr>
+        <td class="pi">Jones</td>
+        <td class="desc">The Potential Health and Economic Impacts of the Dobbs Decision</td>
+        <td class="sponsor">Georgia Institute of Technology (GATECH)</td>
+        <td class="amount">$34,138</td>
+    </tr>
+    <tr>
+        <td class="pi">Koch</td>
+        <td class="desc">Mechanistic insights into the impact of sea ice loss on snow crab trophic dynamics and  productivity</td>
+        <td class="sponsor">North Pacific Research Board (NPRB)</td>
+        <td class="amount">$68,870</td>
+    </tr>
+    <tr>
+        <td class="pi">Kuo</td>
+        <td class="desc">SARMC YR3 Testing the Efficacy of Safe South Africa: An Intervention to Prevent HIV Risk and Interpersonal Violence Among Adolescent Boys</td>
+        <td class="sponsor">National Institutes of Health (NIH)</td>
+        <td class="amount">$294,614</td>
+    </tr>
+    <tr>
+        <td class="pi">Laubach</td>
+        <td class="desc">Cortical actions of opioids on reward-guided decision making</td>
+        <td class="sponsor">National Institutes of Health (NIH)</td>
+        <td class="amount">$476,496</td>
+    </tr>
+    <tr>
+        <td class="pi">Park</td>
+        <td class="desc">Exploring Huayan Buddhism</td>
+        <td class="sponsor">Avatamsaka Buddhist Lotus Society (AVBUDLOTSOC)</td>
+        <td class="amount">$54,072</td>
+    </tr>
+    <tr>
+        <td class="pi">Rasmussen</td>
+        <td class="desc">Korean Art Spotlight Project</td>
+        <td class="sponsor">Korea Arts Management Services (KOREAAMS)</td>
+        <td class="amount">$197,726</td>
+    </tr>
+    <tr>
+        <td class="pi">Robinson</td>
+        <td class="desc">Local Acoustic Topological Estimators for Statistical Signal Tools (LATESST)</td>
+        <td class="sponsor">Office of Naval Research (ONR)</td>
+        <td class="amount">$133,572</td>
+    </tr>
+    <tr>
+        <td class="pi">Roth</td>
+        <td class="desc">Collaborative Research: Elucidating the Composition of our Solar System's Most Primitive Materials - Comprehensive Chemical Analysis of a Halley-Type Comet</td>
+        <td class="sponsor">National Science Foundation (NSF)</td>
+        <td class="amount">$75,645</td>
+    </tr>
+    <tr>
+        <td class="pi">Roth</td>
+        <td class="desc">Composition of an Interstellar Object - Unique Insights into Protoplanetary Disk Midplane Chemistry</td>
+        <td class="sponsor">Space Telescope Science Institute (STSI)</td>
+        <td class="amount">$21,325</td>
+    </tr>
+    <tr>
+        <td class="pi">Roth</td>
+        <td class="desc">Testing The Refractory Sulfur Reservoir Hypothesis with the Next Interstellar Object</td>
+        <td class="sponsor">Space Telescope Science Institute (STSI)</td>
+        <td class="amount">$9,220</td>
+    </tr>
+    <tr>
+        <td class="pi">Sangaramoorthy</td>
+        <td class="desc">REROUTE: Research Employing Environmental Systems and Occupational Health Policy Analyses to Interrupt the Impact of Structural Racism on Agricultural Workers and Their Respiratory Health (RESPIRAR)</td>
+        <td class="sponsor">University of Michigan (UOMICHIGAN)</td>
+        <td class="amount">$18,858</td>
+    </tr>
+    <tr>
+        <td class="pi">Snelling</td>
+        <td class="desc">Healthy Corners Program Evaluation FY26</td>
+        <td class="sponsor">DC Central Kitchen (DCCENTRALK)</td>
+        <td class="amount">$52,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Snider</td>
+        <td class="desc">Koster Foundation Summer Study Grants for Music Majors</td>
+        <td class="sponsor">Marinus And Minna B Koster Foundation Inc (KOSTERFNINC)</td>
+        <td class="amount">$10,000</td>
+    </tr>
+    <tr class="dept-header">
+        <td colspan="4">School of Public Affairs (SPA) &nbsp;<span class="dept-meta">21 awards &nbsp;·&nbsp; $5,189,113</span></td>
+    </tr>
+    <tr>
+        <td class="pi">Baldwin</td>
+        <td class="desc">FY25 COPS Hiring Program</td>
+        <td class="sponsor">City of Olean (CITYOLEAN)</td>
+        <td class="amount">$40,308</td>
+    </tr>
+    <tr>
+        <td class="pi">Barker</td>
+        <td class="desc">The Correspondence of Zachary Taylor and Millard Fillmore</td>
+        <td class="sponsor">National Endowment for the Humanities (NEH)</td>
+        <td class="amount">$197,322</td>
+    </tr>
+    <tr>
+        <td class="pi">Duque</td>
+        <td class="desc">Child Development, Parenting, and Long-run Educational Opportunities: Evidence from  Colombian Linked-Administrative Data</td>
+        <td class="sponsor">Jacobs Foundation (JACOBSFN)</td>
+        <td class="amount">$7,535</td>
+    </tr>
+    <tr>
+        <td class="pi">Duque</td>
+        <td class="desc">Public Housing and Crime</td>
+        <td class="sponsor">Massachusetts Institute of Technology (MIT)</td>
+        <td class="amount">$20,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Faulk</td>
+        <td class="desc">2025 Independent Sector Workforce Study</td>
+        <td class="sponsor">Urban Institute (URBANINST)</td>
+        <td class="amount">$42,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Grewal</td>
+        <td class="desc">Evaluating US Security Cooperation in Turkey and Tunisia</td>
+        <td class="sponsor">US Department of Defense (DOD)</td>
+        <td class="amount">$465,089</td>
+    </tr>
+    <tr>
+        <td class="pi">Jensen</td>
+        <td class="desc">NIJ FY24 Domestic Radicalization and Violent Extremism Research Center of Excellence</td>
+        <td class="sponsor">The Center for Naval Analyses Foundation (CNAFN)</td>
+        <td class="amount">$143,543</td>
+    </tr>
+    <tr>
+        <td class="pi">Leighley</td>
+        <td class="desc">Jan Leighley - IPA</td>
+        <td class="sponsor">National Science Foundation (NSF)</td>
+        <td class="amount">$349,066</td>
+    </tr>
+    <tr>
+        <td class="pi">Levine</td>
+        <td class="desc">PTI Lecture Series</td>
+        <td class="sponsor">Institute for Humane Studies (INSTHS)</td>
+        <td class="amount">$35,739</td>
+    </tr>
+    <tr>
+        <td class="pi">Levine</td>
+        <td class="desc">Supplemental Support Request to the IHS to Celebrate America's 250th & Teach Civics</td>
+        <td class="sponsor">Institute for Humane Studies (INSTHS)</td>
+        <td class="amount">$25,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Matsudaira</td>
+        <td class="desc">PEER Center Partnership with Washington Student Achievement Council (WSAC)</td>
+        <td class="sponsor">Strada Education Foundation (STRADA)</td>
+        <td class="amount">$180,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Merrill</td>
+        <td class="desc">Cultivating Inquiry Through Vital Historical Documents in the Classroom (CIVIC) Seminars</td>
+        <td class="sponsor">US Department of Education (DOE)</td>
+        <td class="amount">$1,748,805</td>
+    </tr>
+    <tr>
+        <td class="pi">Morrissey</td>
+        <td class="desc">Childhood Safety Net Investments and Health Disparities From Birth Through Young Adulthood</td>
+        <td class="sponsor">Brown University (BROWNU)</td>
+        <td class="amount">$63,900</td>
+    </tr>
+    <tr>
+        <td class="pi">PERIL</td>
+        <td class="desc">IDHR Statewide Illinois Hate and Extremism Statewide Landscape Study</td>
+        <td class="sponsor">University of Illinois at Chicago (UIC)</td>
+        <td class="amount">$218,968</td>
+    </tr>
+    <tr>
+        <td class="pi">PERIL</td>
+        <td class="desc">Cultivating Resilient Democracies: Gendered Divides, Polarization and Social Cohesion</td>
+        <td class="sponsor">Carnegie Corporation of New York (CARNEGIE)</td>
+        <td class="amount">$200,000</td>
+    </tr>
+    <tr>
+        <td class="pi">PERIL</td>
+        <td class="desc">CARE Centers, Summer Institute, Intervention Guide & Longitudinal Study</td>
+        <td class="sponsor">Southern Poverty Law Center (SOUTHERNPL)</td>
+        <td class="amount">$350,000</td>
+    </tr>
+    <tr>
+        <td class="pi">PERIL</td>
+        <td class="desc">PERIL Core Funding</td>
+        <td class="sponsor">W.K. Kellogg Foundation (KELLOGG)</td>
+        <td class="amount">$500,000</td>
+    </tr>
+    <tr>
+        <td class="pi">PERIL</td>
+        <td class="desc">U.S. Democracy Program</td>
+        <td class="sponsor">Hewlett Foundation (HEWLETTFN)</td>
+        <td class="amount">$250,000</td>
+    </tr>
+    <tr>
+        <td class="pi">PERIL</td>
+        <td class="desc">Scaling Psychological Resilience to Antisemitism: Accelerated Inoculation Through Influencer Distribution</td>
+        <td class="sponsor">Boundless Israel Inc (BIINC)</td>
+        <td class="amount">$92,474</td>
+    </tr>
+    <tr>
+        <td class="pi">Persico</td>
+        <td class="desc">Real Pay for Real Jobs: Virginia DIF</td>
+        <td class="sponsor">Northwestern University (NORTHWESTERN)</td>
+        <td class="amount">$33,266</td>
+    </tr>
+    <tr>
+        <td class="pi">—</td>
+        <td class="desc">Understanding victim experiences with alternative reporting options after sexual assault and evaluating the impact of anonymous consultation calls with police</td>
+        <td class="sponsor">Wichita State University (WICHSTU)</td>
+        <td class="amount">$226,097</td>
+    </tr>
+    <tr class="dept-header">
+        <td colspan="4">School of International Service (SIS) &nbsp;<span class="dept-meta">14 awards &nbsp;·&nbsp; $4,801,800</span></td>
+    </tr>
+    <tr>
+        <td class="pi">Bradshaw</td>
+        <td class="desc">Workshop on Trust and Safety in Online Games</td>
+        <td class="sponsor">Center for Democracy & Technology (CTRDEMTECH)</td>
+        <td class="amount">$10,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Bradshaw</td>
+        <td class="desc">Workshop on Trust and Safety in Online Games</td>
+        <td class="sponsor">New York University (NYU)</td>
+        <td class="amount">$10,605</td>
+    </tr>
+    <tr>
+        <td class="pi">Bradshaw</td>
+        <td class="desc">Are LLMs Transforming Cyber-Criminal Operations? A Study of LLMs on Dark Web Marketplaces.</td>
+        <td class="sponsor">AI Security Institute (AISI)</td>
+        <td class="amount">$142,802</td>
+    </tr>
+    <tr>
+        <td class="pi">Fox</td>
+        <td class="desc">Indigenous community health rights defenders and respectful care in Mesoamerica</td>
+        <td class="sponsor">Margaret A Cargill Philanthropies (MACARGILLP)</td>
+        <td class="amount">$2,300,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Gearhart</td>
+        <td class="desc">Follow-on to Fisher Learning Exchanges in Mexico and Ghana</td>
+        <td class="sponsor">Multiplier (MULTIPLIER)</td>
+        <td class="amount">$45,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Goldgeier</td>
+        <td class="desc">Stanford Center for International Security and Cooperation Visiting Fellowship</td>
+        <td class="sponsor">Stanford University (STANFORD)</td>
+        <td class="amount">$54,916</td>
+    </tr>
+    <tr>
+        <td class="pi">Herr</td>
+        <td class="desc">Costs of Espionage and Policy Principles</td>
+        <td class="sponsor">Microsoft Operations (MICROSOFTOPS)</td>
+        <td class="amount">$50,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Herr</td>
+        <td class="desc">Tracking Spyware in an Evolving Global Market</td>
+        <td class="sponsor">Atlantic Council (ATLANTICCNCL)</td>
+        <td class="amount">$53,427</td>
+    </tr>
+    <tr>
+        <td class="pi">Martin</td>
+        <td class="desc">Promoting a New Liberal International Order in a Turbulent Age</td>
+        <td class="sponsor">European Union (EUROPEANU)</td>
+        <td class="amount">$98,194</td>
+    </tr>
+    <tr>
+        <td class="pi">Nadelman</td>
+        <td class="desc">Toward a Renewed IDB Civil Society Engagement Strategy</td>
+        <td class="sponsor">Inter-American Development Bank (IADB)</td>
+        <td class="amount">$300,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Tama</td>
+        <td class="desc">Bridging the Gap: New Voices in National Security</td>
+        <td class="sponsor">Frankel Family Foundation (FRANKELFN)</td>
+        <td class="amount">$1,062,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Yamanis</td>
+        <td class="desc">Evaluating a pilot legal intervention to reduce HIV risk among high risk Latina/o/x sexual/gender minorities</td>
+        <td class="sponsor">National Institutes of Health (NIH)</td>
+        <td class="amount">$608,698</td>
+    </tr>
+    <tr>
+        <td class="pi">Yamanis</td>
+        <td class="desc">Formative research to enhance digital literacy for long-acting PrEP among Latin Americans</td>
+        <td class="sponsor">Fordham University (FUFORDHAM)</td>
+        <td class="amount">$56,576</td>
+    </tr>
+    <tr>
+        <td class="pi">Yamanis</td>
+        <td class="desc">DC CENTER FOR AIDS RESEARCH SOCIAL AND BEHAVIORAL SCIENCES (CORE E)</td>
+        <td class="sponsor">George Washington University (GWASHINGTONU)</td>
+        <td class="amount">$9,582</td>
+    </tr>
+    <tr class="dept-header">
+        <td colspan="4">Washington College of Law (WCL) &nbsp;<span class="dept-meta">5 awards &nbsp;·&nbsp; $1,143,300</span></td>
+    </tr>
+    <tr>
+        <td class="pi">Erie</td>
+        <td class="desc">The Future of International Development</td>
+        <td class="sponsor">Ford Foundation (FORDFN)</td>
+        <td class="amount">$300,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Orloff</td>
+        <td class="desc">National Judicial Network: Forum on Human Trafficking and Immigration in State Courts 2026</td>
+        <td class="sponsor">State Justice Institute (SJI)</td>
+        <td class="amount">$75,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Poirier</td>
+        <td class="desc">Program on Legislative Negotiation</td>
+        <td class="sponsor">Hewlett Foundation (HEWLETTFN)</td>
+        <td class="amount">$500,000</td>
+    </tr>
+    <tr>
+        <td class="pi">SaCouto</td>
+        <td class="desc">Jurisprudence Database - Sexual and Gender-Based Crimes, including Conflict-Related Sexual Violence</td>
+        <td class="sponsor">United Nations Office on Drugs and Crime (UNDRUGSCR)</td>
+        <td class="amount">$30,000</td>
+    </tr>
+    <tr>
+        <td class="pi">—</td>
+        <td class="desc">Humphrey Fellowship Program 2025/26</td>
+        <td class="sponsor">Institute of International Education (INSINTLED)</td>
+        <td class="amount">$238,300</td>
+    </tr>
+    <tr class="dept-header">
+        <td colspan="4">School of Education (SOE) &nbsp;<span class="dept-meta">7 awards &nbsp;·&nbsp; $278,696</span></td>
+    </tr>
+    <tr>
+        <td class="pi">Campbell</td>
+        <td class="desc">Teaching Excellence Colleges & Universities Pilot Evaluation at Transylvania University</td>
+        <td class="sponsor">The Bingham Center for Teaching Excellence (BINGHAMCTR)</td>
+        <td class="amount">$61,181</td>
+    </tr>
+    <tr>
+        <td class="pi">Hopson</td>
+        <td class="desc">Co Editor of American Journal of Evaluation</td>
+        <td class="sponsor">American Evaluation Association (AEA)</td>
+        <td class="amount">$17,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Hopson</td>
+        <td class="desc">Cultivating Evaluation Leadership & Building Capacity Through Times of Urgency</td>
+        <td class="sponsor">University of Illinois Urbana-Champaign (UOILLINOIS)</td>
+        <td class="amount">$40,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Jacobson</td>
+        <td class="desc">PGCPS-UWNCA-AU Research Partnership - Year 3</td>
+        <td class="sponsor">United Way of the National Capital Area (UTDWAYNTLCA)</td>
+        <td class="amount">$113,020</td>
+    </tr>
+    <tr>
+        <td class="pi">Joseph</td>
+        <td class="desc">American University Future Teachers</td>
+        <td class="sponsor">CityTutor DC (CITYTUTORDC)</td>
+        <td class="amount">$25,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Shand</td>
+        <td class="desc">Costs of Conflict</td>
+        <td class="sponsor">University of California Los Angeles (UCLA)</td>
+        <td class="amount">$9,995</td>
+    </tr>
+    <tr>
+        <td class="pi">Watkins</td>
+        <td class="desc">Establishing a National Data Repository on Blackness and STEM</td>
+        <td class="sponsor">University of Illinois at Chicago (UIC)</td>
+        <td class="amount">$12,500</td>
+    </tr>
+    <tr class="dept-header">
+        <td colspan="4">School of Communication (SOC) &nbsp;<span class="dept-meta">2 awards &nbsp;·&nbsp; $350,000</span></td>
+    </tr>
+    <tr>
+        <td class="pi">Borum</td>
+        <td class="desc">Great American Punchline Documentary</td>
+        <td class="sponsor">Rockefeller Philanthropy Advisors (ROCKERFELPA)</td>
+        <td class="amount">$50,000</td>
+    </tr>
+    <tr>
+        <td class="pi">Borum</td>
+        <td class="desc">New Documentary Platform</td>
+        <td class="sponsor">Perspective Fund (PERSPECTFD)</td>
+        <td class="amount">$300,000</td>
+    </tr>
+    <tr class="dept-header">
+        <td colspan="4">WAMU 88.5 &nbsp;<span class="dept-meta">1 awards &nbsp;·&nbsp; $1,000,000</span></td>
+    </tr>
+    <tr>
+        <td class="pi">Tribble</td>
+        <td class="desc">1A: America In Conversation</td>
+        <td class="sponsor">Corporation for Public Broadcasting (CPB)</td>
+        <td class="amount">$1,000,000</td>
+    </tr>
+    <tr class="dept-header">
+        <td colspan="4">Office of Research (OR) &nbsp;<span class="dept-meta">2 awards &nbsp;·&nbsp; $250,755</span></td>
+    </tr>
+    <tr>
+        <td class="pi">CECE</td>
+        <td class="desc">Monitoring changes to land use and value in Northern Haiti through collaborative ethnographic and remote sensing approaches</td>
+        <td class="sponsor">National Science Foundation (NSF)</td>
+        <td class="amount">$246,755</td>
+    </tr>
+    <tr>
+        <td class="pi">PROVOST</td>
+        <td class="desc">2026 American University's MLK Day of Service</td>
+        <td class="sponsor">Transform Mid-Atlantic, Inc. (TRANSFORMMAINC)</td>
+        <td class="amount">$4,000</td>
+    </tr>
+    </tbody>
+  </table>
   </div>
 
   <footer>FY2026 Award Listing · 83 awards · Data as of 2/28/2026</footer>
 </div>
 
 <script>
-function filterCards() {
+function filterTable() {
   const search = document.getElementById('searchBox').value.toLowerCase();
   const dept = document.getElementById('deptFilter').value;
+  const rows = document.querySelectorAll('#awardsTable tbody tr');
+  let currentDeptMatch = true;
 
-  document.querySelectorAll('.dept-block').forEach(block => {
-    const blockDept = block.dataset.dept;
-    const deptMatch = !dept || blockDept === dept;
-    let visibleCards = 0;
-
-    block.querySelectorAll('.card').forEach(card => {
-      const textMatch = !search || card.dataset.text.includes(search);
-      const show = deptMatch && textMatch;
-      card.classList.toggle('hidden', !show);
-      if (show) visibleCards++;
-    });
-
-    block.classList.toggle('hidden', !deptMatch || (search && visibleCards === 0));
+  rows.forEach(row => {
+    if (row.classList.contains('dept-header')) {
+      const deptText = row.textContent;
+      if (!dept) {
+        currentDeptMatch = true;
+      } else {
+        const deptKeys = Object.entries({
+          'College of Arts & Sciences (CAS)': 'CAS',
+          'School of Public Affairs (SPA)': 'SPA',
+          'School of International Service (SIS)': 'SIS',
+          'Washington College of Law (WCL)': 'WCL',
+          'School of Education (SOE)': 'SOE',
+          'School of Communication (SOC)': 'SOC',
+          'WAMU 88.5': 'WAMU',
+          'Office of Research (OR)': 'OR'
+        });
+        currentDeptMatch = deptKeys.some(([label, code]) => code === dept && deptText.includes(label));
+      }
+      row.classList.toggle('hidden', !currentDeptMatch);
+      return;
+    }
+    if (!currentDeptMatch) { row.classList.add('hidden'); return; }
+    const text = row.textContent.toLowerCase();
+    row.classList.toggle('hidden', search && !text.includes(search));
   });
 }
 </script>
